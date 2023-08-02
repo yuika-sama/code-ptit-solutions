@@ -5,14 +5,14 @@ using namespace std;
 const int X[4] = {-1, 0, 1, 0};
 const int Y[4] = {0, 1, 0, -1};
 int m, n;
-class prio
+class prio //sort rely on cost, distance,...
 {
 	public:
 		bool operator()(pair<int, pair<int, int> > &p1, pair<int, pair<int, int> > &p2){
 			return (p1.second.second > p2.second.second);
 		}
 };
-bool safe(int x, int y){
+bool safe(int x, int y){ //inside grid condition
 	if (x<0 || x>=m || y<0 || y>=n){
 		return 0;
 	}
@@ -22,7 +22,7 @@ main(){
 	faster();
 	int t; cin >> t;
 	while (t--){
-		int a[505][505], f[505][505], vs[505][505] = {0};//vs: visited, f: cost
+		int a[505][505], f[505][505], vs[505][505] = {0};//vs: visited, f: cost, a: table
 		cin >> m >> n;
 		for (int i=0; i<m; i++){
 			for (int j=0; j<n; j++){
