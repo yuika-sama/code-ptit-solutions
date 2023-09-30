@@ -1,2 +1,2 @@
-# PTIT_Yuika
-my practice code
+# Code PTIT & Competitive Programming
+my practice code for CP
