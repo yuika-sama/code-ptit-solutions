@@ -7,17 +7,17 @@ main(){
 	faster();
 	int t; cin >> t;
 	while (t--){
-		int n, k; cin >> n >> k;
-		int a[n+5];
-		for (int i=0; i<n; i++) cin >> a[i];
-		int d = 0;
-		for (int i=0; i<n-1; i++){
-			for (int j=i+1; j<n; j++){
-				if (abs(a[i] - a[j]) < k){
-					d++;
-				}
+		int n; cin >> n;
+		bool check = false;
+		vector<int> f(1000000, 0);
+		for (int i=0; i<n; i++){
+			int r; cin >> r;
+			f[r]++;
+			if (f[r] == 2 && !check){
+				check = true;
+				cout << r << endl;
 			}
 		}
-		cout << d << endl;
+		if (!check) cout << -1 << endl;
 	}
 }

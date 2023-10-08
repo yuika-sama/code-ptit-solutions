@@ -8,16 +8,16 @@ main(){
 	int t; cin >> t;
 	while (t--){
 		int n, k; cin >> n >> k;
-		int a[n+5];
-		for (int i=0; i<n; i++) cin >> a[i];
-		int d = 0;
-		for (int i=0; i<n-1; i++){
-			for (int j=i+1; j<n; j++){
-				if (abs(a[i] - a[j]) < k){
-					d++;
-				}
-			}
+		priority_queue<int, vector<int>, less<int> > a;
+		for (int i=0; i<n; i++){
+			int r; cin >> r;
+			a.push(r);
 		}
-		cout << d << endl;
+		while (k){
+			cout << a.top() << ' ';
+			a.pop();
+			k--;
+		}
+		cout << endl;
 	}
 }

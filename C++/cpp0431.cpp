@@ -9,14 +9,14 @@ main(){
 	while (t--){
 		int n, k; cin >> n >> k;
 		int a[n+5];
-		for (int i=0; i<n; i++) cin >> a[i];
+		for (int i=0; i<n; i++){
+			cin >> a[i];
+		}
+		sort(a, a+n);
 		int d = 0;
 		for (int i=0; i<n-1; i++){
-			for (int j=i+1; j<n; j++){
-				if (abs(a[i] - a[j]) < k){
-					d++;
-				}
-			}
+			auto it = lower_bound(a, a+n, a[i] + k);
+			d += it - a - i - 1;
 		}
 		cout << d << endl;
 	}

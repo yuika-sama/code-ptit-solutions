@@ -7,17 +7,20 @@ main(){
 	faster();
 	int t; cin >> t;
 	while (t--){
-		int n, k; cin >> n >> k;
-		int a[n+5];
-		for (int i=0; i<n; i++) cin >> a[i];
-		int d = 0;
+		int n; cin >> n;
+		vector<int> f(1e7, 0);
+		int mx = -1, mn = INT_MAX;
 		for (int i=0; i<n-1; i++){
-			for (int j=i+1; j<n; j++){
-				if (abs(a[i] - a[j]) < k){
-					d++;
-				}
+			int r; cin >> r;
+			f[r]++;
+			mx = max(mx, r);
+			mn = min(mn, r);
+		}
+		for (int i = mn; i<=mx; i++){
+			if (f[i] == 0){
+				cout << i << endl;
+				break;
 			}
 		}
-		cout << d << endl;
 	}
 }

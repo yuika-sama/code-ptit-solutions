@@ -7,17 +7,15 @@ main(){
 	faster();
 	int t; cin >> t;
 	while (t--){
-		int n, k; cin >> n >> k;
-		int a[n+5];
-		for (int i=0; i<n; i++) cin >> a[i];
-		int d = 0;
-		for (int i=0; i<n-1; i++){
-			for (int j=i+1; j<n; j++){
-				if (abs(a[i] - a[j]) < k){
-					d++;
-				}
-			}
+		int n; cin >> n;
+		set<int> s;
+		int mx = -1, mn = 9999;
+		for (int i=0; i<n; i++){
+			int x; cin >> x;
+			s.insert(x);
+			mx = max(mx, x);
+			mn = min(mn, x);
 		}
-		cout << d << endl;
+		cout << mx - mn + 1 - s.size() << endl;
 	}
 }

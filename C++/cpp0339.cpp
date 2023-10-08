@@ -7,17 +7,15 @@ main(){
 	faster();
 	int t; cin >> t;
 	while (t--){
-		int n, k; cin >> n >> k;
-		int a[n+5];
-		for (int i=0; i<n; i++) cin >> a[i];
-		int d = 0;
-		for (int i=0; i<n-1; i++){
-			for (int j=i+1; j<n; j++){
-				if (abs(a[i] - a[j]) < k){
-					d++;
+		string s; cin >> s;
+		int res = s.size();
+		for (int i=0; i<s.size()-1; i++){
+			for (int j=i+1; j<s.size(); j++){
+				if (s[i] == s[j]){
+					res++;
 				}
 			}
 		}
-		cout << d << endl;
+		cout << res << endl;
 	}
 }

@@ -7,17 +7,13 @@ main(){
 	faster();
 	int t; cin >> t;
 	while (t--){
-		int n, k; cin >> n >> k;
-		int a[n+5];
-		for (int i=0; i<n; i++) cin >> a[i];
-		int d = 0;
-		for (int i=0; i<n-1; i++){
-			for (int j=i+1; j<n; j++){
-				if (abs(a[i] - a[j]) < k){
-					d++;
-				}
-			}
+		string n; cin >> n;
+		long long m; cin >> m;
+		long long k = 0;
+		for (int i=0; i<n.size(); i++){
+			k = k*10 + (n[i] - '0');
+			k%=m;
 		}
-		cout << d << endl;
+		cout << k << endl;
 	}
 }

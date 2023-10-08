@@ -7,17 +7,26 @@ main(){
 	faster();
 	int t; cin >> t;
 	while (t--){
-		int n, k; cin >> n >> k;
+		int n; cin >> n;
 		int a[n+5];
-		for (int i=0; i<n; i++) cin >> a[i];
 		int d = 0;
+		for (int i=0; i<n; i++){
+			cin >> a[i];
+			d+=(a[i]==0);
+		}
 		for (int i=0; i<n-1; i++){
-			for (int j=i+1; j<n; j++){
-				if (abs(a[i] - a[j]) < k){
-					d++;
-				}
+			if (a[i+1]!=0 && a[i] == a[i+1]){
+				a[i] *= 2;
+				a[i+1] = 0;
+				d++;
 			}
 		}
-		cout << d << endl;
+		for(int i=0; i<n; i++){
+			if (a[i] != 0)cout << a[i] << ' ';
+		}
+		while (d--){
+			cout << 0 << ' ';
+		}
+		cout << endl;
 	}
 }

@@ -7,17 +7,19 @@ main(){
 	faster();
 	int t; cin >> t;
 	while (t--){
-		int n, k; cin >> n >> k;
+		int n; cin >> n;
+		int res = 0;
+		int mn = INT_MAX;
 		int a[n+5];
 		for (int i=0; i<n; i++) cin >> a[i];
-		int d = 0;
 		for (int i=0; i<n-1; i++){
 			for (int j=i+1; j<n; j++){
-				if (abs(a[i] - a[j]) < k){
-					d++;
+				if (abs(a[i] + a[j]) < mn){
+					mn = abs(a[i] + a[j]);
+					res = a[i] + a[j];
 				}
 			}
 		}
-		cout << d << endl;
+		cout << res << endl;
 	}
 }

@@ -3,21 +3,23 @@
 #define endl '\n'
 #define precision(x)  setprecision(x) << fixed
 using namespace std;
+int x[25], n;
+void Try(int i){
+	for (int j=0; j<2; j++){
+		x[i] = j;
+		if (i==n){
+			for (int i=1; i<=n; i++) cout << x[i];
+			cout << ' ';
+		} else Try(i+1);
+	}
+}
 main(){
 	faster();
 	int t; cin >> t;
 	while (t--){
-		int n, k; cin >> n >> k;
-		int a[n+5];
-		for (int i=0; i<n; i++) cin >> a[i];
-		int d = 0;
-		for (int i=0; i<n-1; i++){
-			for (int j=i+1; j<n; j++){
-				if (abs(a[i] - a[j]) < k){
-					d++;
-				}
-			}
-		}
-		cout << d << endl;
+		cin >> n;
+		memset(x, 0, sizeof(x));
+		Try(1);
+		cout << endl;
 	}
 }

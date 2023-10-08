@@ -7,17 +7,20 @@ main(){
 	faster();
 	int t; cin >> t;
 	while (t--){
-		int n, k; cin >> n >> k;
+		int n; cin >> n;
 		int a[n+5];
 		for (int i=0; i<n; i++) cin >> a[i];
-		int d = 0;
-		for (int i=0; i<n-1; i++){
-			for (int j=i+1; j<n; j++){
-				if (abs(a[i] - a[j]) < k){
-					d++;
-				}
+		sort(a, a+n);
+		if (n%2==0){
+			for (int i=0; i<n/2; i++){
+				cout << a[n-i-1] << ' ' << a[i] << ' ';
+			}
+		} else {
+			for (int i=0; i<=n/2; i++){
+				if (i!=n/2) cout << a[n-i-1] << ' ' << a[i] << ' ';
+				else cout << a[i];
 			}
 		}
-		cout << d << endl;
+		cout << endl;
 	}
 }

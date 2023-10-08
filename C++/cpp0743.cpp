@@ -6,18 +6,17 @@ using namespace std;
 main(){
 	faster();
 	int t; cin >> t;
+	cin.ignore();
 	while (t--){
-		int n, k; cin >> n >> k;
-		int a[n+5];
-		for (int i=0; i<n; i++) cin >> a[i];
-		int d = 0;
-		for (int i=0; i<n-1; i++){
-			for (int j=i+1; j<n; j++){
-				if (abs(a[i] - a[j]) < k){
-					d++;
-				}
-			}
+		string s; 
+		vector<string> v;
+		getline(cin, s);
+		stringstream  ss(s);
+		string r;
+		while (ss >> r){
+			v.push_back(r);
 		}
-		cout << d << endl;
+		for (int i=v.size()-1; i>=0; i--) cout << v[i] << ' ';
+		cout << endl;
 	}
 }
