@@ -7,20 +7,29 @@
 #define mp pake_pair
 #define keocon {cout << "I used to be your Tinkle Bell, but we're too old for fairytales, my love."}
 using namespace std;
-ll solve(ll a, ll b, ll c){ //chat nhi phan
-	if (b==0) return 0;
-	if (b==1) return a%c;
-	ll t = solve(a, b/2, c);
-	ll r = 2*t%c;
-	if (b%2==1) return (r+a)%c;
-	return r;
-}
 main(){
 	faster();
 	int t; cin >> t;
 	while (t--){
-		long long a, b, c;
-		cin >> a >> b >> c;
-		cout << solve(a,b,c) << endl;
+		int n, k; cin >> n >> k;
+		int a[n+5];
+		ll f[n+5] = {};
+		f[0] = 0;
+		for (int i=1; i<=n; i++){
+			cin >> a[i];
+			f[i] = f[i-1] + a[i];
+		}
+		ll Max = -999999999;
+		pair<int, int> p;
+		for (int i=1; i+k<=n; i++){
+			if (f[i+k] - f[i+1] > Max){
+				p = {i+1, i+k};
+				Max = f[i+k] - f[i+1];
+			}
+		}
+		for (int i = p.first; i<=p.second; i++){
+			cout << a[i] << ' ';
+		}
+		cout << endl;
 	}
 }
