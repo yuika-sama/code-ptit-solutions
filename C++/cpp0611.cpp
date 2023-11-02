@@ -1,0 +1,50 @@
+#include <bits/stdc++.h>
+#define faster() {ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);}
+#define endl '\n'
+#define precision(x)  setprecision(x) << fixed
+#define ll long long
+#define pb push_back
+#define mp make_pair
+#define keocon {cout << "I used to be your Tinkle Bell, but we're too old for fairytales, my love."}
+using namespace std;
+int d = 1;
+string chuanhoa(string a){
+	//dd/mm/yyyy
+	if (a[2]!='/') a = '0' + a;
+	if (a[5]!='/') a.insert(3,1,'0');
+	return a;
+}
+class SinhVien{
+	private:
+		string name, cls, dob;
+		int id;
+		double gpa;
+	public:
+		friend istream &operator >> (istream &is, SinhVien &a){
+			getline(is >> ws, a.name);
+			is >> a.cls >> a.dob >> a.gpa;
+			a.dob = chuanhoa(a.dob);
+			a.id = d++;
+			return is;
+		}
+		friend ostream &operator << (ostream &os, SinhVien a){
+			cout << "B20DCCN";
+			if (a.id < 10) cout << "00"; else cout << "0"; 
+			cout << a.id << ' ' << a.name << ' ' << a.cls << ' ' << a.dob << ' ' << precision(2) << a.gpa << endl;
+			return os;
+		}
+};
+//int d = 1;
+int main(){
+	faster();
+    SinhVien ds[50];
+    int N, i;
+    cin >> N;
+    for(i=0;i<N;i++){
+        cin >> ds[i];
+    }
+    for(i=0;i<N;i++){
+        cout << ds[i];
+    }
+    return 0;
+}
