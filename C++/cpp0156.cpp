@@ -9,12 +9,11 @@ main(){
 	while (t--){
 		long long b, p; cin >> b >> p;
 		long long d = 0;
-		        /*
-	    T/c d?ng du: x % p = 1 thì x^2 % p = 1
-	    Nh?n th?y(coi nhu tính ch?t cngdc): x % p == 1 thì (x + p*i) % p == 1
-	    V?i m?i x t/m, ta tìm last là s? l?n nh?t có d?ng (x + p*i) còn t.m last % p == 1
-	    Nhu v?y s? tính du?c s? lu?ng s? t/m trong do?n [x, last]
-	    */
+		/*x%p=1 then (x^2)%p=1
+		Noticed: x%p=1 then (x+p*i)%p=1
+		so, with each satified x, , we find last - the largest number that last = (x+p*i) and last%p=1
+		-> we find the quantity of satified number inside [x, last]
+		*/
 		for (long long i = 1; i<p; i++){
 			if ((i*i)%p == 1){
 				long long last = i+p*(b/p);
