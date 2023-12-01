@@ -35,10 +35,10 @@ main(){
 	while (q--){
 		getline(cin, s);
 		if (s == "Ke toan") major =  "KT";
-	    else if (s == "Cong nghe thong tin") major = "CN";
-	    else if (s == "An toan thong tin") major = "AT";
-	    else if (s == "Vien thong") major = "VT";
-	    else if (s == "Dien tu") major = "DT";
+	    	else if (s == "Cong nghe thong tin") major = "CN";
+	    	else if (s == "An toan thong tin") major = "AT";
+	    	else if (s == "Vien thong") major = "VT";
+		else if (s == "Dien tu") major = "DT";
 		for (auto& x:s){
 			x = toupper(x);
 		}
