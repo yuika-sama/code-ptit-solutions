@@ -1,3 +1,4 @@
+//shout out and thank to Vu Cong Tuan Duong for his solution
 #include <bits/stdc++.h>
 #define faster() {ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);}
 #define endl '\n'
@@ -7,95 +8,142 @@
 #define mp make_pair
 #define keocon {cout << "I used to be your Tinkle Bell, but we're all too old for fairytales, my love."}
 using namespace std;
-//vkl de bi loi chu code juan r
 
-int d1 = 1, d2 = 1, d3 = 1;
-int n,m,k;
-class KhachHang;
-class MatHang;
-class HoaDon;
-map<string, KhachHang> KH;
-map<string, MatHang> MH;
-vector<HoaDon> hopdong;
+class khachhang;
+class mathang;
+class hoadon;
 
-class KhachHang{
+int c_kh = 1;
+int c_mh = 1;
+int c_hd = 1;
+
+map<string, khachhang> m_kh;
+map<string, mathang> m_mh;
+
+class khachhang{
 	public:
-		string name, id, gen, date, ad;
-		friend class HoaDon;
+		string id = "KH";
+		string name, gen, dob, ad;
 };
-class MatHang{
+
+class mathang{
 	public:
-		string id, name, dv;
-		ll cost, sell;
-		friend class HoaDon;
+		string id = "MH";
+		string name, dv;
+		ll buy, sell;
 };
-class HoaDon{
+
+class hoadon{
 	public:
-		string mhd, mkh, mmh;
-		int quant;
-		friend ostream &operator << (ostream &os, HoaDon &a){
-			//cai loz j the nay ?
-			os << a.mhd << ' ' << KH[a.mkh].name << ' ' << KH[a.mkh].ad << ' ' << MH[a.mmh].name << ' ' <<  MH[a.mmh].dv << ' ' << MH[a.mmh].cost << ' ' << MH[a.mmh].sell << ' ' <<  a.quant << ' ' << MH[a.mmh].sell * a.quant << endl;
-			return os;
+		string id = "HD";
+		string mkh, mmh;
+		ll quantity, profit, money;
+};
+
+main(){
+	/*
+		initiate: getting information from files
+	*/
+	khachhang kh_list[1000];
+	mathang mh_list[1000];
+	hoadon hd_list[1000];
+	fstream fkh, fmh, fhd;
+	fkh.open("KH.in");
+	fmh.open("MH.in");
+	fhd.open("HD.in");
+	int n, m, k, i;
+	fkh >> n;
+	fmh >> m;
+	fhd >> k;
+	vector<string> kh_str;
+	vector<string> mh_str;
+	vector<string> hd_str;
+	string temp;
+	while (getline(fkh, temp)){
+		kh_str.pb(temp);
+	}
+	while (getline(fmh, temp)){
+		mh_str.pb(temp);
+	}
+	while (getline(fhd, temp)){
+		hd_str.pb(temp);
+	}
+	fkh.close();
+	fmh.close();
+	fhd.close();
+	int cur_kh = 1;
+	int cur_mh = 1;
+	int cur_hd = 1;
+	/*
+		get customers's information and then push them into a map
+	*/
+	for (int i=0; i<n; ++i){
+		temp = to_string(c_kh);
+		while (temp.size()!=3){
+			temp = "0" + temp;
 		}
-};
-void getKH(){
-	ifstream in("KH.in");
-	in >> n;
-	in.ignore();
-	for (int i=0; i<n; i++){
-		KhachHang kh;
-		getline(in, kh.name);
-		getline(in, kh.gen);
-		getline(in, kh.date);
-		getline(in, kh.ad);
-		if (d1 < 10) kh.id = "KH00" + to_string(d1);
-		else kh.id = "KH0" + to_string(d1);
-		d1++;
-		KH[kh.id] = kh;
+		kh_list[i].id += temp;
+		c_kh++;
+		if (kh_str[cur_kh] == " ") cur_kh++;
+		kh_list[i].name = kh_str[cur_kh++];
+		if (kh_str[cur_kh] == " ") cur_kh++;
+		kh_list[i].gen = kh_str[cur_kh++];
+		if (kh_str[cur_kh] == " ") cur_kh++;
+		kh_list[i].dob = kh_str[cur_kh++];
+		if (kh_str[cur_kh] == " ") cur_kh++;
+		kh_list[i].ad = kh_str[cur_kh++];
+		m_kh[kh_list[i].id] = kh_list[i];
 	}
-}
-void getMH(){
-	ifstream in("MH.in");
-	in >> m;
-	in.ignore();
-	for (int i=0; i<m; i++){
-		MatHang mh;
-		getline(in, mh.name);
-		getline(in, mh.dv);
-		in >> mh.cost >> mh.sell;
-		in.ignore();
-		if (d2 < 10) mh.id = "MH00" + to_string(d2);
-		else mh.id = "MH0" + to_string(d2);
-		d2++;
-		MH[mh.id] = mh;
+	/*
+		get items's information and then push them into a map
+	*/
+	for (int i=0; i<m; ++i){
+		temp = to_string(c_mh);
+		while (temp.size()!=3){
+			temp = "0" + temp;
+		}
+		mh_list[i].id += temp;
+		c_mh++;
+		if (mh_str[cur_mh] == " ") cur_mh++;
+		mh_list[i].name = mh_str[cur_mh++];
+		if (mh_str[cur_mh] == " ") cur_mh++;
+		mh_list[i].dv = mh_str[cur_mh++];
+		if (mh_str[cur_mh] == " ") cur_mh++;
+		mh_list[i].buy = stoi(mh_str[cur_mh++]);
+		if (mh_str[cur_mh] == " ") cur_mh++;
+		mh_list[i].sell = stoi(mh_str[cur_mh++]);
+		m_mh[mh_list[i].id] = mh_list[i];
 	}
-}
-void getHD(){
-	ifstream in("HD.in");
-	in >> k;
-	in.ignore();
+	/*
+		get bills's information and then push them into a map
+	*/
+	for (int i=0; i<k; ++i){
+		temp = to_string(c_hd);
+		while (temp.size()!=3){
+			temp = "0" + temp;
+		}
+		hd_list[i].id += temp;
+		c_hd++;
+		stringstream ss(hd_str[cur_hd++]);
+		string tmp;
+		vector<string> token;
+		while (ss>>tmp){
+			token.pb(tmp);
+		}
+		hd_list[i].mkh = token[0];
+		hd_list[i].mmh = token[1];
+		hd_list[i].quantity = stoi(token[2]);
+		hd_list[i].money = m_mh[hd_list[i].mmh].sell *  hd_list[i].quantity;
+		hd_list[i].profit = hd_list[i].money - m_mh[hd_list[i].mmh].buy*hd_list[i].quantity;
+	}
+	/*
+		print output
+	*/
 	for (int i=0; i<k; i++){
-		HoaDon hd;
-		in >> hd.mkh >> hd.mmh;
-		in >> hd.quant;
-		in.ignore();
-		if (d3 < 10) hd.mhd = "HD00" + to_string(d3);
-		else hd.mhd = "HD0" + to_string(d3);
-		d3++;
-		hopdong.pb(hd);
+		cout << hd_list[i].id << ' ' << m_kh[hd_list[i].mkh].name << ' ' << m_kh[hd_list[i].mkh].ad << ' '; 
+		cout << m_mh[hd_list[i].mmh].name << ' ' << m_mh[hd_list[i].mmh].dv << ' ';
+		cout << m_mh[hd_list[i].mmh].buy << ' ' << m_mh[hd_list[i].mmh].sell << ' ';
+		cout << hd_list[i].quantity << ' ' << hd_list[i].money;
+		cout << endl;
 	}
-}
-void printHD(){
-	for (int i = 0; i<hopdong.size(); i++){
-		cout << hopdong[i];
-	}
-}
-int main(){	
-	faster();
-    getKH();
-    getMH();
-    getHD();
-    printHD();
-    return 0;
 }
