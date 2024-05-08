@@ -24,39 +24,51 @@ using namespace std;
 
 
 //end of template
-int n, k;
-vector<int> a;
-vector<vector<int>> res;
-void Try(int limit, int value, vector<int> v){
-	if (value == k){
-		res.pb(v);
-	}
-	for (int i=0; i<n; i++){
-		if (a[i] >= limit and a[i] + value <= k){
-			v.pb(a[i]);
-			Try(a[i], value + a[i], v);
-			v.pop_back();
+bool prime(int n){
+	if (n<2) return false;
+	if (n==2) return true;
+	if (n%2==0) return false;
+	for (int i=3; i<=sqrt(n); i+=2){
+		if (n%i==0){
+			return false;
 		}
 	}
+	return true;
 }
+
 void solve(){
 	/*hav fun with coding*/
-	cin >> n >> k;
-	a.resize(n);
-	res.clear();
-	for (auto& i:a) cin >> i;
+	int n;
+	cin >> n;
+	vector<int> a(n);
+	for (int i=0; i<n; i++){
+		cin >> a[i];
+	}
 	sort(a.begin(), a.end());
-	Try(1, 0, {});
-	if (res.size() == 0) cout << -1; else {
-		cout << res.size() << ' ';
-		for (auto i:res){
-			cout << '{';
-			for (int j=0; j<i.size(); j++){
-				cout << i[j];
-				if (j!=i.size() - 1) cout << ' ';
+	vector<vector<int>> res;
+	for (int i=0; i<(1<<n); i++){
+		bitset<32> bs(i);
+		string s = bs.to_string().substr(32-n);
+		int sum = 0;
+		vector<int> v;
+		for (int i=0; i<s.size(); i++){
+			if (s[i] == '1'){
+				sum += a[i];
+				v.pb(a[i]);
 			}
-			cout << "} ";
 		}
+		if (prime(sum)){
+			sort(v.begin(), v.end());
+			reverse(v.begin(), v.end());
+			res.pb(v);
+		}
+	}
+	sort(res.begin(), res.end());
+	for (auto i:res){
+		for (auto j:i){
+			cout << j << ' ';
+		}
+		cout << endl;
 	}
 }
 main(){

@@ -24,40 +24,32 @@ using namespace std;
 
 
 //end of template
-int n, k;
-vector<int> a;
-vector<vector<int>> res;
-void Try(int limit, int value, vector<int> v){
-	if (value == k){
-		res.pb(v);
-	}
-	for (int i=0; i<n; i++){
-		if (a[i] >= limit and a[i] + value <= k){
-			v.pb(a[i]);
-			Try(a[i], value + a[i], v);
-			v.pop_back();
-		}
-	}
-}
+
+
 void solve(){
 	/*hav fun with coding*/
-	cin >> n >> k;
-	a.resize(n);
-	res.clear();
-	for (auto& i:a) cin >> i;
-	sort(a.begin(), a.end());
-	Try(1, 0, {});
-	if (res.size() == 0) cout << -1; else {
-		cout << res.size() << ' ';
-		for (auto i:res){
-			cout << '{';
-			for (int j=0; j<i.size(); j++){
-				cout << i[j];
-				if (j!=i.size() - 1) cout << ' ';
+	string s; cin >> s;
+	int n = s.size();
+	int f[n+5][n+5];
+	memset(f, 0, sizeof(f));
+	int res = 0;
+	for (int len = 1; len <= n; len++){
+		for (int l = 0; l<n-len+1; l++){
+			int r = l + len - 1;
+			if (len == 1){
+				f[l][r] = 1;
+				continue;
 			}
-			cout << "} ";
+			if (len == 2){
+				f[l][r] = 1 + (s[l] == s[r]);
+				continue;
+			}
+			f[l][r] = max(f[l+1][r], f[l][r-1]);
+			if (s[l] == s[r]) f[l][r] = max(f[l][r], 2 + f[l+1][r-1]);
+			res = max(res, f[l][r]);
 		}
 	}
+	cout << res;
 }
 main(){
 	faster();

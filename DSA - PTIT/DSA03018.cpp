@@ -20,45 +20,26 @@ using namespace std;
 #define sp << ' ' <<
 #define endl '\n'
 #define precision(x) setprecision(x) << fixed
-#define keocon {cout << "I used to be your Tinkle Bell, we are too old for fairytales, my love."}
+#define keocon() {cout << "I used to be your Tinkle Bell, we are too old for fairytales, my love.";}
 
 
 //end of template
-int n, k;
-vector<int> a;
-vector<vector<int>> res;
-void Try(int limit, int value, vector<int> v){
-	if (value == k){
-		res.pb(v);
-	}
-	for (int i=0; i<n; i++){
-		if (a[i] >= limit and a[i] + value <= k){
-			v.pb(a[i]);
-			Try(a[i], value + a[i], v);
-			v.pop_back();
-		}
-	}
-}
 void solve(){
 	/*hav fun with coding*/
-	cin >> n >> k;
-	a.resize(n);
-	res.clear();
-	for (auto& i:a) cin >> i;
-	sort(a.begin(), a.end());
-	Try(1, 0, {});
-	if (res.size() == 0) cout << -1; else {
-		cout << res.size() << ' ';
-		for (auto i:res){
-			cout << '{';
-			for (int j=0; j<i.size(); j++){
-				cout << i[j];
-				if (j!=i.size() - 1) cout << ' ';
-			}
-			cout << "} ";
-		}
+	int n; cin >> n;
+	int f = n%7, s = n/7;
+	while (f%4!=0 and f <= 28 and s > 0){
+		f += 7;
+		s--;
 	}
-}
+	if (f%4==0) f/=4;
+	else {
+		cout << -1;
+		return;
+	}
+	while (f--) cout << 4;
+	while (s--) cout << 7;
+} 
 main(){
 	faster();
 	int T = 1;

@@ -24,39 +24,26 @@ using namespace std;
 
 
 //end of template
-int n, k;
-vector<int> a;
-vector<vector<int>> res;
-void Try(int limit, int value, vector<int> v){
-	if (value == k){
-		res.pb(v);
-	}
-	for (int i=0; i<n; i++){
-		if (a[i] >= limit and a[i] + value <= k){
-			v.pb(a[i]);
-			Try(a[i], value + a[i], v);
-			v.pop_back();
-		}
-	}
-}
+
+
 void solve(){
 	/*hav fun with coding*/
-	cin >> n >> k;
-	a.resize(n);
-	res.clear();
-	for (auto& i:a) cin >> i;
-	sort(a.begin(), a.end());
-	Try(1, 0, {});
-	if (res.size() == 0) cout << -1; else {
-		cout << res.size() << ' ';
-		for (auto i:res){
-			cout << '{';
-			for (int j=0; j<i.size(); j++){
-				cout << i[j];
-				if (j!=i.size() - 1) cout << ' ';
-			}
-			cout << "} ";
+	int n; cin >> n;
+	queue<pii> q;
+	q.push({n, 0});
+	while (true){
+		pii p = q.front(); q.pop();
+		if (p.fi == 1){
+			cout << p.sc;
+			return;
 		}
+		if (p.fi%3 == 0){
+			q.push({p.fi/3, p.sc+1});
+		}
+		if (p.fi%2==0){
+			q.push({p.fi/2, p.sc+1});
+		}
+		q.push({p.fi-1, p.sc+1});
 	}
 }
 main(){

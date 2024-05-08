@@ -24,43 +24,25 @@ using namespace std;
 
 
 //end of template
-int n, k;
-vector<int> a;
-vector<vector<int>> res;
-void Try(int limit, int value, vector<int> v){
-	if (value == k){
-		res.pb(v);
-	}
-	for (int i=0; i<n; i++){
-		if (a[i] >= limit and a[i] + value <= k){
-			v.pb(a[i]);
-			Try(a[i], value + a[i], v);
-			v.pop_back();
-		}
-	}
-}
+ll f[1005][1005];
+const ll c = 1e9+7;
 void solve(){
-	/*hav fun with coding*/
+	/*hav fun with coding*/	
+	int n, k;
 	cin >> n >> k;
-	a.resize(n);
-	res.clear();
-	for (auto& i:a) cin >> i;
-	sort(a.begin(), a.end());
-	Try(1, 0, {});
-	if (res.size() == 0) cout << -1; else {
-		cout << res.size() << ' ';
-		for (auto i:res){
-			cout << '{';
-			for (int j=0; j<i.size(); j++){
-				cout << i[j];
-				if (j!=i.size() - 1) cout << ' ';
-			}
-			cout << "} ";
-		}
-	}
+	cout << f[n][k];
 }
 main(){
 	faster();
+	for (int i=0; i<=1001; ++i){
+		for (int j=0; j<=min(i, 1001); ++j){
+			if (j == 0) f[i][j] = 1;
+			else {
+				f[i][j] = (f[i-1][j] + j*f[i-1][j-1])%c;
+			}
+			f[i][j+1] = 0;
+		}
+	}
 	int T = 1;
 	cin >> T;
 	while (T--){

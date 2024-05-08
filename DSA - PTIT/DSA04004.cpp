@@ -8,6 +8,12 @@
 #define keocon {cout << "I used to be your Tinkle Bell, but we're too old for fairytales, my love."}
 #define MAX 20
 using namespace std;
+int calclate(int n, ll k){
+	ll x = pow(2, n-1);
+	if (k==x) return n;
+	if (k<x) return calclate(n-1, k);
+	return calclate(n-1, k-x);
+}
 main(){
 	faster();
 	ll f[52];
@@ -21,12 +27,14 @@ main(){
 		int n;
 		ll k;
 		cin >> n >> k;
-		for (int i=n; i>=1; i--){
-			if (k>f[i]) k-= f[i];
-			else if (k==f[i]){
-				cout << i << endl;
-				break;
-			}
-		}
+		// for (int i=n; i>=1; i--){
+		// 	if (k>f[i]) k-= f[i];
+		// 	else if (k==f[i]){
+		// 		cout << i << endl;
+		// 		break;
+		// 	}
+		// }
+		cout << calclate(n, k) << endl;
+		cout << __builtin_ctzll(k) + 1 << endl;
 	}
 }

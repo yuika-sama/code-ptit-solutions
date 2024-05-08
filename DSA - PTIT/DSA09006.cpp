@@ -24,38 +24,46 @@ using namespace std;
 
 
 //end of template
-int n, k;
-vector<int> a;
-vector<vector<int>> res;
-void Try(int limit, int value, vector<int> v){
-	if (value == k){
-		res.pb(v);
-	}
-	for (int i=0; i<n; i++){
-		if (a[i] >= limit and a[i] + value <= k){
-			v.pb(a[i]);
-			Try(a[i], value + a[i], v);
-			v.pop_back();
+set<int> adj[1005];
+int parent[1005];
+bool vs[1005];
+void dfs(int u){
+	vs[u] = true;
+	for (auto v:adj[u]){
+		if (!vs[v]){
+			parent[v] = u;
+			dfs(v);
 		}
 	}
 }
 void solve(){
 	/*hav fun with coding*/
-	cin >> n >> k;
-	a.resize(n);
-	res.clear();
-	for (auto& i:a) cin >> i;
-	sort(a.begin(), a.end());
-	Try(1, 0, {});
-	if (res.size() == 0) cout << -1; else {
-		cout << res.size() << ' ';
+	for (auto& i:adj){
+		i.clear();
+	}
+	memset(vs, false, sizeof(vs));
+	memset(parent, 0, sizeof(parent));
+	int u, v, s, t;
+	cin >> u >> v >> s >> t;
+	int x, y;
+	for(int i=0; i<v; i++){
+		cin >> x >> y;
+		adj[x].ins(y);
+		adj[y].ins(x);
+	}
+	dfs(s);
+	if(vs[t] == false){
+		cout << -1;
+	} else {
+		vector<int> res;
+		while (s!=t){
+			res.pb(t);
+			t = parent[t];
+		}
+		res.pb(s);
+		reverse(res.begin(), res.end());
 		for (auto i:res){
-			cout << '{';
-			for (int j=0; j<i.size(); j++){
-				cout << i[j];
-				if (j!=i.size() - 1) cout << ' ';
-			}
-			cout << "} ";
+			cout << i << ' ';
 		}
 	}
 }

@@ -24,40 +24,42 @@ using namespace std;
 
 
 //end of template
-int n, k;
-vector<int> a;
-vector<vector<int>> res;
-void Try(int limit, int value, vector<int> v){
-	if (value == k){
-		res.pb(v);
-	}
-	for (int i=0; i<n; i++){
-		if (a[i] >= limit and a[i] + value <= k){
-			v.pb(a[i]);
-			Try(a[i], value + a[i], v);
-			v.pop_back();
-		}
+int n, m;
+int u, v;
+int parent[1005], num[1005];
+void init_(){
+	for (int i=1; i<=n; i++){
+		parent[i] = i;
+		num[i] = 1;
 	}
 }
+int find_(int u){
+	if (u!=parent[u]){
+		parent[u] = find_(parent[u]);
+	}
+	return parent[u];
+}
+bool union_(int u, int v){
+	int a = find_(u), b = find_(v);
+	if (a == b) return false;
+	if (num[a] < num[b]) swap(a, b);
+	parent[b] = a;
+	num[a] += num[b];
+	return true;
+}
+
 void solve(){
 	/*hav fun with coding*/
-	cin >> n >> k;
-	a.resize(n);
-	res.clear();
-	for (auto& i:a) cin >> i;
-	sort(a.begin(), a.end());
-	Try(1, 0, {});
-	if (res.size() == 0) cout << -1; else {
-		cout << res.size() << ' ';
-		for (auto i:res){
-			cout << '{';
-			for (int j=0; j<i.size(); j++){
-				cout << i[j];
-				if (j!=i.size() - 1) cout << ' ';
-			}
-			cout << "} ";
-		}
+	cin >> n >> m;
+	while (m--){
+		cin >> u >> v;
+		union_(u, v);
 	}
+	int MAX = -1;
+	for (int i=1; i<=n; i++){
+		MAX = max(MAX, num[parent[i]]);
+	}
+	cout << MAX;
 }
 main(){
 	faster();

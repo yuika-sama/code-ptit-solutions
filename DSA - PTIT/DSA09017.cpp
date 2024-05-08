@@ -24,40 +24,39 @@ using namespace std;
 
 
 //end of template
-int n, k;
-vector<int> a;
-vector<vector<int>> res;
-void Try(int limit, int value, vector<int> v){
-	if (value == k){
-		res.pb(v);
-	}
-	for (int i=0; i<n; i++){
-		if (a[i] >= limit and a[i] + value <= k){
-			v.pb(a[i]);
-			Try(a[i], value + a[i], v);
-			v.pop_back();
+set<int> adj[1005];
+bool vs[1005];
+int v, e;
+void dfs(int u){
+	vs[u] = true;
+	for (auto i:adj[u]){
+		if (!vs[i]){
+			dfs(i);
 		}
 	}
 }
 void solve(){
 	/*hav fun with coding*/
-	cin >> n >> k;
-	a.resize(n);
-	res.clear();
-	for (auto& i:a) cin >> i;
-	sort(a.begin(), a.end());
-	Try(1, 0, {});
-	if (res.size() == 0) cout << -1; else {
-		cout << res.size() << ' ';
-		for (auto i:res){
-			cout << '{';
-			for (int j=0; j<i.size(); j++){
-				cout << i[j];
-				if (j!=i.size() - 1) cout << ' ';
-			}
-			cout << "} ";
-		}
+	// int v, e;
+	for (auto& i:adj){
+		i.clear();
 	}
+	memset(vs, false, sizeof(vs));
+
+	cin >> v;
+	int x, y;
+	for (int i=1; i<v; i++){
+		cin >> x >> y;
+		adj[x].ins(y);
+		adj[y].ins(x);
+	}
+
+	dfs(1);
+	bool check = true;
+	for (int i=2; i<=v; i++){
+		if (!vs[i]) check = false;
+	}
+	if (check) cout << "YES"; else cout << "NO";
 }
 main(){
 	faster();

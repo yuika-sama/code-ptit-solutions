@@ -24,40 +24,35 @@ using namespace std;
 
 
 //end of template
-int n, k;
-vector<int> a;
-vector<vector<int>> res;
-void Try(int limit, int value, vector<int> v){
-	if (value == k){
-		res.pb(v);
-	}
-	for (int i=0; i<n; i++){
-		if (a[i] >= limit and a[i] + value <= k){
-			v.pb(a[i]);
-			Try(a[i], value + a[i], v);
-			v.pop_back();
-		}
-	}
+struct item{
+	int v, w;
+	double r;
+};
+bool cmp(item a, item b){
+	return a.r > b.r;
 }
 void solve(){
 	/*hav fun with coding*/
-	cin >> n >> k;
-	a.resize(n);
-	res.clear();
-	for (auto& i:a) cin >> i;
-	sort(a.begin(), a.end());
-	Try(1, 0, {});
-	if (res.size() == 0) cout << -1; else {
-		cout << res.size() << ' ';
-		for (auto i:res){
-			cout << '{';
-			for (int j=0; j<i.size(); j++){
-				cout << i[j];
-				if (j!=i.size() - 1) cout << ' ';
-			}
-			cout << "} ";
+	int n, w;
+	cin >> n >> w;
+	vector<item> m(n);
+	for (int i=0; i<n; i++){
+		cin >> m[i].w >> m[i].v;
+		m[i].r = (double)m[i].w / m[i].v;
+	}
+	sort(m.begin(), m.end(), cmp);
+	int value = 0;
+	double weight = 0;
+	int c = 0;
+	for (int i=0; i<n; i++){
+		if (value <= w-0.5){
+			value += m[i].v;
+			weight += m[i].w;
+			c = i;
 		}
 	}
+	if (value > w) weight -= (double)(value - w) * m[c].r;
+	cout << precision(2) << weight;
 }
 main(){
 	faster();

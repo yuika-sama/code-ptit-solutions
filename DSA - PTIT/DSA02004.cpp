@@ -24,38 +24,48 @@ using namespace std;
 
 
 //end of template
-int n, k;
-vector<int> a;
-vector<vector<int>> res;
-void Try(int limit, int value, vector<int> v){
-	if (value == k){
-		res.pb(v);
+const int dx[4] = {1, -1, 0, 0};
+const int dy[4] = {0, 0, -1, 1};
+const string dir = "DULR";
+int a[10][10] = {};
+int n;
+bool vs[15][15];
+vector<string> res;
+
+void dfs(int x, int y, string s){
+	if (x == n and y == n){
+		res.pb(s);
 	}
-	for (int i=0; i<n; i++){
-		if (a[i] >= limit and a[i] + value <= k){
-			v.pb(a[i]);
-			Try(a[i], value + a[i], v);
-			v.pop_back();
+	vs[x][y] = true;
+	for (int i=0; i<4; i++){
+		int new_x = x + dx[i];
+		int new_y = y + dy[i];
+		if (a[new_x][new_y] == 1 and !vs[new_x][new_y]){
+			if (new_x >= 1 and new_y >= 1 and new_x <=n and new_y <= n){
+				dfs(new_x, new_y, s + dir[i]);
+			}
 		}
 	}
+	vs[x][y] = false;
 }
 void solve(){
 	/*hav fun with coding*/
-	cin >> n >> k;
-	a.resize(n);
+	cin >> n;
+	memset(a, 0, sizeof(a));
+	memset(vs, false, sizeof(vs));
 	res.clear();
-	for (auto& i:a) cin >> i;
-	sort(a.begin(), a.end());
-	Try(1, 0, {});
-	if (res.size() == 0) cout << -1; else {
-		cout << res.size() << ' ';
-		for (auto i:res){
-			cout << '{';
-			for (int j=0; j<i.size(); j++){
-				cout << i[j];
-				if (j!=i.size() - 1) cout << ' ';
+	for (int i=1; i<=n; i++){
+		for (int j=1; j<=n; j++){
+			cin >> a[i][j];
+		}
+	}
+	if (a[1][1] == 0 or a[n][n] == 0) cout << -1; else {
+		dfs(1, 1, "");
+		if (res.size() == 0) cout << -1; else {
+			sort(res.begin(), res.end());
+			for (auto i:res){
+				cout << i << ' ';
 			}
-			cout << "} ";
 		}
 	}
 }

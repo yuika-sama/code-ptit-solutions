@@ -1,4 +1,4 @@
-#include<bits/stdc++.h>
+	#include<bits/stdc++.h>
 using namespace std;
 #pragma GCC optimize("O2")
 #pragma GCC target("avx,avx2,fma")
@@ -24,40 +24,40 @@ using namespace std;
 
 
 //end of template
-int n, k;
-vector<int> a;
-vector<vector<int>> res;
-void Try(int limit, int value, vector<int> v){
-	if (value == k){
-		res.pb(v);
-	}
-	for (int i=0; i<n; i++){
-		if (a[i] >= limit and a[i] + value <= k){
-			v.pb(a[i]);
-			Try(a[i], value + a[i], v);
-			v.pop_back();
+bool a[505][505];
+int n, m;
+int cc = 0;
+int dx[8] = {-1,-1,-1,0,1,1,1,0};
+int dy[8] = {-1,0,1,1,1,0,-1,-1};
+void dfs(int i, int j){
+	a[i][j] = 0;
+	for (int k=0; k<8; k++){
+		int x = i + dx[k];
+		int y = j + dy[k];
+		if (x >= 1 and y >= 1 and x <= n and y <= m and a[x][y] == 1){
+			dfs(x, y);
 		}
 	}
 }
 void solve(){
 	/*hav fun with coding*/
-	cin >> n >> k;
-	a.resize(n);
-	res.clear();
-	for (auto& i:a) cin >> i;
-	sort(a.begin(), a.end());
-	Try(1, 0, {});
-	if (res.size() == 0) cout << -1; else {
-		cout << res.size() << ' ';
-		for (auto i:res){
-			cout << '{';
-			for (int j=0; j<i.size(); j++){
-				cout << i[j];
-				if (j!=i.size() - 1) cout << ' ';
-			}
-			cout << "} ";
+	cin >> n >> m;
+	memset(a, 0, sizeof(a));
+	for (int i=1; i<=n; i++){
+		for (int j=1; j<=m; j++){
+			cin >> a[i][j];
 		}
 	}
+	cc = 0;
+	for (int i=1; i<=n; i++){
+		for (int j=1; j<=m; j++){
+			if (a[i][j] == 1){
+				dfs(i, j);
+				cc++;
+			}
+		}
+	}
+	cout << cc;
 }
 main(){
 	faster();

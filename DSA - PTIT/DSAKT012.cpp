@@ -24,45 +24,31 @@ using namespace std;
 
 
 //end of template
+int c = 1e9;
 int n, k;
-vector<int> a;
-vector<vector<int>> res;
-void Try(int limit, int value, vector<int> v){
-	if (value == k){
-		res.pb(v);
-	}
-	for (int i=0; i<n; i++){
-		if (a[i] >= limit and a[i] + value <= k){
-			v.pb(a[i]);
-			Try(a[i], value + a[i], v);
-			v.pop_back();
+int a[35];	
+void Try(int index, int val, int count){
+	if (index == n or val >= k or count > c){
+		if (val == k){
+			c = min(c, count);
 		}
+		return;
 	}
+	Try(index+1, val, count);
+	Try(index+1, val+a[index], count+1);
 }
 void solve(){
 	/*hav fun with coding*/
 	cin >> n >> k;
-	a.resize(n);
-	res.clear();
-	for (auto& i:a) cin >> i;
-	sort(a.begin(), a.end());
-	Try(1, 0, {});
-	if (res.size() == 0) cout << -1; else {
-		cout << res.size() << ' ';
-		for (auto i:res){
-			cout << '{';
-			for (int j=0; j<i.size(); j++){
-				cout << i[j];
-				if (j!=i.size() - 1) cout << ' ';
-			}
-			cout << "} ";
-		}
-	}
+	for (int i=0; i<n; i++) cin >> a[i];
+	sort(a, a+n);
+	Try(0, 0, 0);
+	if (c == 1e9) cout << -1; else cout << c;
 }
 main(){
 	faster();
 	int T = 1;
-	cin >> T;
+	// cin >> T;
 	while (T--){
 		solve();
 		cout << endl;

@@ -24,48 +24,62 @@ using namespace std;
 
 
 //end of template
-int n, k;
-vector<int> a;
+vector<bool> v(205, true);
+vector<int> f;
+void naive(){
+	v[0] = v[1] = false;
+	for (int i=2; i*i<=200; ++i){
+		if (v[i]){
+			for (int j = i*i; j<=200; j+=i){
+				v[j] = false;
+			}
+		}
+	}
+	for (int i=2; i<=200; ++i){
+		if (v[i]){
+			f.pb(i);
+		}
+	}
+}
+int n, p, s;
 vector<vector<int>> res;
-void Try(int limit, int value, vector<int> v){
-	if (value == k){
+void Try(int sum, int position, vector<int> v){
+	if (v.size() == n and sum == s){
 		res.pb(v);
 	}
-	for (int i=0; i<n; i++){
-		if (a[i] >= limit and a[i] + value <= k){
-			v.pb(a[i]);
-			Try(a[i], value + a[i], v);
+	for (int i=position; i<f.size(); ++i){
+		if (sum + f[i] <= s){
+			v.pb(f[i]);
+			Try(sum + f[i], i+1, v);
 			v.pop_back();
-		}
+		} else return;
 	}
 }
 void solve(){
 	/*hav fun with coding*/
-	cin >> n >> k;
-	a.resize(n);
 	res.clear();
-	for (auto& i:a) cin >> i;
-	sort(a.begin(), a.end());
-	Try(1, 0, {});
-	if (res.size() == 0) cout << -1; else {
-		cout << res.size() << ' ';
-		for (auto i:res){
-			cout << '{';
-			for (int j=0; j<i.size(); j++){
-				cout << i[j];
-				if (j!=i.size() - 1) cout << ' ';
-			}
-			cout << "} ";
+	cin >> n >> p >> s;
+
+	int index = lower_bound(f.begin(), f.end(), p) - f.begin();
+	if (f[index] == p) index++;
+	Try(0, index, {});
+
+	cout << res.size() << endl;
+	for (auto i:res){
+		for (auto j:i){
+			cout << j << ' ';
 		}
+		cout << endl;
 	}
 }
 main(){
 	faster();
+	naive();
 	int T = 1;
 	cin >> T;
 	while (T--){
 		solve();
-		cout << endl;
+		// cout << endl
 	}
 	return 0;
 }

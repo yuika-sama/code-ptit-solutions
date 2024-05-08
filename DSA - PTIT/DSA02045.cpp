@@ -24,40 +24,34 @@ using namespace std;
 
 
 //end of template
-int n, k;
-vector<int> a;
-vector<vector<int>> res;
-void Try(int limit, int value, vector<int> v){
-	if (value == k){
-		res.pb(v);
-	}
-	for (int i=0; i<n; i++){
-		if (a[i] >= limit and a[i] + value <= k){
-			v.pb(a[i]);
-			Try(a[i], value + a[i], v);
-			v.pop_back();
-		}
+int n;
+string s;
+int x[16];
+vector<string> res;
+void Try(int i){
+	for (int j=0; j<2; j++){
+		x[i] = j;
+		if (i == n-1){
+			string tmp = "";
+			for (int i=0; i<n; i++){
+				if (x[i] == 1){
+					tmp += s[i];
+				}
+			}
+			// cout << ' ';
+			res.pb(tmp);
+		} else Try(i+1);
 	}
 }
 void solve(){
 	/*hav fun with coding*/
-	cin >> n >> k;
-	a.resize(n);
+	memset(x, 0, sizeof(x));
 	res.clear();
-	for (auto& i:a) cin >> i;
-	sort(a.begin(), a.end());
-	Try(1, 0, {});
-	if (res.size() == 0) cout << -1; else {
-		cout << res.size() << ' ';
-		for (auto i:res){
-			cout << '{';
-			for (int j=0; j<i.size(); j++){
-				cout << i[j];
-				if (j!=i.size() - 1) cout << ' ';
-			}
-			cout << "} ";
-		}
-	}
+	cin >> n;
+	cin >> s;
+	Try(0);
+	sort(res.begin(), res.end());
+	for (auto i:res) cout << i << ' ';
 }
 main(){
 	faster();

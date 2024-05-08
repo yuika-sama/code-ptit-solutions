@@ -25,39 +25,27 @@ using namespace std;
 
 //end of template
 int n, k;
-vector<int> a;
-vector<vector<int>> res;
-void Try(int limit, int value, vector<int> v){
-	if (value == k){
-		res.pb(v);
-	}
-	for (int i=0; i<n; i++){
-		if (a[i] >= limit and a[i] + value <= k){
-			v.pb(a[i]);
-			Try(a[i], value + a[i], v);
-			v.pop_back();
-		}
+int a[20], x[20];
+void Try(int i){
+	for (int j = x[i-1]+1; j<=n-k+i; j++){
+		x[i] = j;
+		if (i==k){
+			for (int i=1; i<=k; i++){
+				cout << a[x[i]] << ' ';
+			}
+			cout << endl;
+		} else Try(i+1);
 	}
 }
+
 void solve(){
 	/*hav fun with coding*/
 	cin >> n >> k;
-	a.resize(n);
-	res.clear();
-	for (auto& i:a) cin >> i;
-	sort(a.begin(), a.end());
-	Try(1, 0, {});
-	if (res.size() == 0) cout << -1; else {
-		cout << res.size() << ' ';
-		for (auto i:res){
-			cout << '{';
-			for (int j=0; j<i.size(); j++){
-				cout << i[j];
-				if (j!=i.size() - 1) cout << ' ';
-			}
-			cout << "} ";
-		}
-	}
+	memset(a, 0, sizeof(a));
+	memset(x, 0, sizeof(x));
+	for (int i=1; i<=n; i++) cin >> a[i];
+	sort(a+1, a+n+1);
+	Try(1);
 }
 main(){
 	faster();

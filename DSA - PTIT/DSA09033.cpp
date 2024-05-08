@@ -24,40 +24,37 @@ using namespace std;
 
 
 //end of template
-int n, k;
-vector<int> a;
-vector<vector<int>> res;
-void Try(int limit, int value, vector<int> v){
-	if (value == k){
-		res.pb(v);
-	}
-	for (int i=0; i<n; i++){
-		if (a[i] >= limit and a[i] + value <= k){
-			v.pb(a[i]);
-			Try(a[i], value + a[i], v);
-			v.pop_back();
+int n, m;
+int u, v;
+vector<vector<int>> adj;
+vector<bool> vs;
+void dfs(int u){
+	vs[u] = true;
+	for (auto v:adj[u]){
+		if (!vs[v]){
+			dfs(v);
 		}
 	}
 }
 void solve(){
 	/*hav fun with coding*/
-	cin >> n >> k;
-	a.resize(n);
-	res.clear();
-	for (auto& i:a) cin >> i;
-	sort(a.begin(), a.end());
-	Try(1, 0, {});
-	if (res.size() == 0) cout << -1; else {
-		cout << res.size() << ' ';
-		for (auto i:res){
-			cout << '{';
-			for (int j=0; j<i.size(); j++){
-				cout << i[j];
-				if (j!=i.size() - 1) cout << ' ';
-			}
-			cout << "} ";
+	/*Checking connected graph*/
+	cin >> n >> m;
+	adj.assign(n+1, {});
+	vs.assign(n+1, false);
+	while (m--){
+		cin >> u >> v;
+		adj[u].pb(v);
+		adj[v].pb(u);
+	}
+	dfs(1);
+	for (int i=2; i<=n; i++){
+		if (!vs[i]){
+			cout << "NO";
+			return;
 		}
 	}
+	cout << "YES";
 }
 main(){
 	faster();

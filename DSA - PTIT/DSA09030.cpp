@@ -24,40 +24,47 @@ using namespace std;
 
 
 //end of template
-int n, k;
-vector<int> a;
-vector<vector<int>> res;
-void Try(int limit, int value, vector<int> v){
-	if (value == k){
-		res.pb(v);
-	}
-	for (int i=0; i<n; i++){
-		if (a[i] >= limit and a[i] + value <= k){
-			v.pb(a[i]);
-			Try(a[i], value + a[i], v);
-			v.pop_back();
+int n, m;
+set<int> adj[1005];
+int color[1005];
+bool bfs(int u){
+	queue<int> q;
+	q.push(u);
+	color[u] = 0;
+	while (!q.empty()){
+		int v = q.front(); q.pop();
+		for (int x:adj[v]){
+			if (color[x] == -1){
+				color[x] = 1 - color[v];
+				q.push(x);
+			} else if (color[x] == color[v]) return false;
 		}
 	}
+	return true;
 }
 void solve(){
 	/*hav fun with coding*/
-	cin >> n >> k;
-	a.resize(n);
-	res.clear();
-	for (auto& i:a) cin >> i;
-	sort(a.begin(), a.end());
-	Try(1, 0, {});
-	if (res.size() == 0) cout << -1; else {
-		cout << res.size() << ' ';
-		for (auto i:res){
-			cout << '{';
-			for (int j=0; j<i.size(); j++){
-				cout << i[j];
-				if (j!=i.size() - 1) cout << ' ';
+	for (auto& i:adj){
+		i.clear();
+	}
+	memset(color, -1, sizeof(color));
+	cin >> n >> m;
+	int x, y;
+	while (m--){
+		cin >> x >> y;
+		adj[x].ins(y);
+		adj[y].ins(x);
+	}
+	bool ok = true;
+	for (int i=1; i<=n; i++){
+		if (color[i] == -1){
+			if (!bfs(i)){
+				cout << "NO";
+				return;
 			}
-			cout << "} ";
 		}
 	}
+	cout << "YES";
 }
 main(){
 	faster();

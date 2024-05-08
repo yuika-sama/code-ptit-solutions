@@ -24,40 +24,42 @@ using namespace std;
 
 
 //end of template
-int n, k;
-vector<int> a;
-vector<vector<int>> res;
-void Try(int limit, int value, vector<int> v){
-	if (value == k){
-		res.pb(v);
-	}
-	for (int i=0; i<n; i++){
-		if (a[i] >= limit and a[i] + value <= k){
-			v.pb(a[i]);
-			Try(a[i], value + a[i], v);
-			v.pop_back();
+set<int> adj[1005];
+int n, m;
+int x, y;
+bool ok;
+int vs[1005];
+void dfs(int i){
+	if (ok) return;
+	vs[i] = 1;
+	for (auto j:adj[i]){
+		if (vs[j] == 0){
+			dfs(j);
+		} else if (vs[j] == 1){
+			ok = true;
+			return;
 		}
 	}
+	vs[i] = 2;
 }
 void solve(){
 	/*hav fun with coding*/
-	cin >> n >> k;
-	a.resize(n);
-	res.clear();
-	for (auto& i:a) cin >> i;
-	sort(a.begin(), a.end());
-	Try(1, 0, {});
-	if (res.size() == 0) cout << -1; else {
-		cout << res.size() << ' ';
-		for (auto i:res){
-			cout << '{';
-			for (int j=0; j<i.size(); j++){
-				cout << i[j];
-				if (j!=i.size() - 1) cout << ' ';
-			}
-			cout << "} ";
+	memset(vs, 0, sizeof(vs));
+	ok = false;
+	for (auto& i:adj){
+		i.clear();
+	}
+	cin >> n >> m;
+	while (m--){
+		cin >> x >> y;
+		adj[x].ins(y);
+	}
+	for (int i=1; i<=n; i++){
+		if (!vs[i] and !ok){
+			dfs(i);
 		}
 	}
+	if (ok) cout << "YES"; else cout << "NO";
 }
 main(){
 	faster();

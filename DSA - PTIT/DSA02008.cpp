@@ -25,44 +25,56 @@ using namespace std;
 
 //end of template
 int n, k;
-vector<int> a;
-vector<vector<int>> res;
-void Try(int limit, int value, vector<int> v){
-	if (value == k){
-		res.pb(v);
-	}
+vector<vector<int>> c, r;
+vector<int> x;
+bool vs[25];
+void cal(){
+	int sum = 0;
 	for (int i=0; i<n; i++){
-		if (a[i] >= limit and a[i] + value <= k){
-			v.pb(a[i]);
-			Try(a[i], value + a[i], v);
-			v.pop_back();
+		sum += c[i][x[i]];
+	}
+	if (sum == k){
+		r.pb(x);
+	}
+}
+void Try(int i){
+	for (int j=0; j<n; j++){
+		if (!vs[j]){
+			x[i] = j;
+			vs[j] = true;
+			if (i == n-1){
+				cal();
+			} else Try(i+1);
+			vs[j] = false;
 		}
 	}
 }
 void solve(){
 	/*hav fun with coding*/
 	cin >> n >> k;
-	a.resize(n);
-	res.clear();
-	for (auto& i:a) cin >> i;
-	sort(a.begin(), a.end());
-	Try(1, 0, {});
-	if (res.size() == 0) cout << -1; else {
-		cout << res.size() << ' ';
-		for (auto i:res){
-			cout << '{';
-			for (int j=0; j<i.size(); j++){
-				cout << i[j];
-				if (j!=i.size() - 1) cout << ' ';
-			}
-			cout << "} ";
+	c.resize(n, vector<int>(n));
+	r.clear();
+	x.clear(); x.resize(n, 0);
+	for (int i=0; i<n; i++){
+		for (int j=0; j<n; j++){
+			cin >> c[i][j];
 		}
+	}
+	for (int i=0; i<n; i++) x[i] = i;
+	memset(vs, false, sizeof(vs));
+	Try(0);
+	cout << r.size() << endl;
+	for (auto i:r){
+		for (auto j:i){
+			cout << j+1 << ' ';
+		}
+		cout << endl;
 	}
 }
 main(){
 	faster();
 	int T = 1;
-	cin >> T;
+	// cin >> T;
 	while (T--){
 		solve();
 		cout << endl;

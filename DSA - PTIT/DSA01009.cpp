@@ -24,48 +24,49 @@ using namespace std;
 
 
 //end of template
+vector<string> res;
+string s;
 int n, k;
-vector<int> a;
-vector<vector<int>> res;
-void Try(int limit, int value, vector<int> v){
-	if (value == k){
-		res.pb(v);
-	}
-	for (int i=0; i<n; i++){
-		if (a[i] >= limit and a[i] + value <= k){
-			v.pb(a[i]);
-			Try(a[i], value + a[i], v);
-			v.pop_back();
+bool check(){
+	string z(k, 'A');
+	int pos = s.find(z, 0);
+	if (pos!=-1){
+		string sub = s.substr(pos+1);
+		if (sub.find(z) == -1){
+			return true;
 		}
 	}
+	return false;
 }
+void Try(int i){
+	for (char j='A'; j<'C'; j++){
+		s[i] = j;
+		if (i == n-1){
+			if (check()){
+				res.pb(s);
+			}
+		} else Try(i+1);
+	}
+}
+
 void solve(){
 	/*hav fun with coding*/
 	cin >> n >> k;
-	a.resize(n);
-	res.clear();
-	for (auto& i:a) cin >> i;
-	sort(a.begin(), a.end());
-	Try(1, 0, {});
-	if (res.size() == 0) cout << -1; else {
-		cout << res.size() << ' ';
-		for (auto i:res){
-			cout << '{';
-			for (int j=0; j<i.size(); j++){
-				cout << i[j];
-				if (j!=i.size() - 1) cout << ' ';
-			}
-			cout << "} ";
-		}
+	s.resize(n, 'A');
+	Try(0);
+	cout << res.size() << endl;
+	sort(res.begin(), res.end());
+	for (auto i:res){
+		cout << i << endl;
 	}
 }
 main(){
 	faster();
 	int T = 1;
-	cin >> T;
+	// cin >> T;
 	while (T--){
 		solve();
 		cout << endl;
 	}
 	return 0;
-}
+}	

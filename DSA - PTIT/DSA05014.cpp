@@ -24,40 +24,43 @@ using namespace std;
 
 
 //end of template
-int n, k;
-vector<int> a;
-vector<vector<int>> res;
-void Try(int limit, int value, vector<int> v){
-	if (value == k){
-		res.pb(v);
+typedef string bint;
+bint operator*(string a, int b){
+	if (a=="0" or b == 0) return "0";
+	int n = a.size();
+	bint c(n, '0');
+	int rem = 0;
+	for (int i=n-1; i>=0; --i){
+		rem += (a[i]-'0') * b;
+		c[i] = rem%10 + '0';
+		rem /= 10;
 	}
-	for (int i=0; i<n; i++){
-		if (a[i] >= limit and a[i] + value <= k){
-			v.pb(a[i]);
-			Try(a[i], value + a[i], v);
-			v.pop_back();
+	if (rem > 0){
+		c = to_string(rem) + c;
+	}
+	return c;
+}
+bint catalan(int n){
+	vector<int> word;
+	for (int i=n+2; i<=2*n; i++) word.pb(i);
+	for (int i=2; i<=n; i++){
+		int x = i;
+		for (int j=0; j<word.size() and x>1; j++){
+			int d = __gcd(word[j], x);
+			x /= d;
+			word[j] /= d;
 		}
 	}
+	bint res = "1";
+	for (int i=0; i<word.size(); i++){
+		res = res * word[i];
+	}
+	return res;
 }
 void solve(){
 	/*hav fun with coding*/
-	cin >> n >> k;
-	a.resize(n);
-	res.clear();
-	for (auto& i:a) cin >> i;
-	sort(a.begin(), a.end());
-	Try(1, 0, {});
-	if (res.size() == 0) cout << -1; else {
-		cout << res.size() << ' ';
-		for (auto i:res){
-			cout << '{';
-			for (int j=0; j<i.size(); j++){
-				cout << i[j];
-				if (j!=i.size() - 1) cout << ' ';
-			}
-			cout << "} ";
-		}
-	}
+	int n; cin >> n;
+	cout << catalan(n);
 }
 main(){
 	faster();

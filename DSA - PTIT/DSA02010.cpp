@@ -26,10 +26,16 @@ using namespace std;
 //end of template
 int n, k;
 vector<int> a;
-vector<vector<int>> res;
+bool check;
 void Try(int limit, int value, vector<int> v){
 	if (value == k){
-		res.pb(v);
+		check = true;
+		cout << '[';
+		for (int i=0; i<v.size(); i++){
+			cout << v[i];
+			if (i!=v.size() - 1) cout << ' ';
+		}
+		cout << ']';
 	}
 	for (int i=0; i<n; i++){
 		if (a[i] >= limit and a[i] + value <= k){
@@ -43,21 +49,11 @@ void solve(){
 	/*hav fun with coding*/
 	cin >> n >> k;
 	a.resize(n);
-	res.clear();
 	for (auto& i:a) cin >> i;
 	sort(a.begin(), a.end());
+	check = false;
 	Try(1, 0, {});
-	if (res.size() == 0) cout << -1; else {
-		cout << res.size() << ' ';
-		for (auto i:res){
-			cout << '{';
-			for (int j=0; j<i.size(); j++){
-				cout << i[j];
-				if (j!=i.size() - 1) cout << ' ';
-			}
-			cout << "} ";
-		}
-	}
+	if (!check) cout << -1;
 }
 main(){
 	faster();

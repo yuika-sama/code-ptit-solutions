@@ -24,41 +24,45 @@ using namespace std;
 
 
 //end of template
-int n, k;
-vector<int> a;
-vector<vector<int>> res;
-void Try(int limit, int value, vector<int> v){
-	if (value == k){
-		res.pb(v);
-	}
-	for (int i=0; i<n; i++){
-		if (a[i] >= limit and a[i] + value <= k){
-			v.pb(a[i]);
-			Try(a[i], value + a[i], v);
-			v.pop_back();
+bool check[1001];
+int M[1001];
+vector<int> A[1001];
+string bfs(int n, int v){
+	int maxx = 1;
+	for (int i=1; i<=n; i++) M[i] = 1;
+	for (int i=1; i<=n; i++){
+		if (!check[i]){
+			check[i] = true;
+			queue<int> q;
+			q.push(i);
+			while (!q.empty()){
+				int tmp = q.front(); q.pop();
+				for (auto x:A[tmp]){
+					if (M[x] == M[tmp]) M[x]++;
+					maxx = max(maxx, max(M[x], M[tmp]));
+					if (maxx > v) return "NO";
+					if (!check[x]) q.push(x), check[x] = true;
+				}
+			}
 		}
 	}
+	return "YES";
 }
 void solve(){
-	/*hav fun with coding*/
-	cin >> n >> k;
-	a.resize(n);
-	res.clear();
-	for (auto& i:a) cin >> i;
-	sort(a.begin(), a.end());
-	Try(1, 0, {});
-	if (res.size() == 0) cout << -1; else {
-		cout << res.size() << ' ';
-		for (auto i:res){
-			cout << '{';
-			for (int j=0; j<i.size(); j++){
-				cout << i[j];
-				if (j!=i.size() - 1) cout << ' ';
-			}
-			cout << "} ";
-		}
+	int n, m, v;
+	cin >> n >> m >> v;
+	for (int i=0; i<=n; i++){
+		A[i].clear();
+		check[i] = false;
 	}
-}
+	while (m--){
+		int x, y;
+		cin >> x >> y;
+		A[x-1].pb(y-1);
+		A[y-1].pb(x-1);
+	}
+	cout << bfs(n, v);
+}	
 main(){
 	faster();
 	int T = 1;

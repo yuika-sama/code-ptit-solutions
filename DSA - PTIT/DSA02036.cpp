@@ -24,39 +24,39 @@ using namespace std;
 
 
 //end of template
-int n, k;
-vector<int> a;
-vector<vector<int>> res;
-void Try(int limit, int value, vector<int> v){
-	if (value == k){
-		res.pb(v);
-	}
-	for (int i=0; i<n; i++){
-		if (a[i] >= limit and a[i] + value <= k){
-			v.pb(a[i]);
-			Try(a[i], value + a[i], v);
-			v.pop_back();
-		}
-	}
-}
 void solve(){
 	/*hav fun with coding*/
-	cin >> n >> k;
+	vector<int> a;
+	int n;
+	cin >> n;
 	a.resize(n);
-	res.clear();
-	for (auto& i:a) cin >> i;
+	for (int i=0; i<n; i++){
+		cin >> a[i];
+	}
 	sort(a.begin(), a.end());
-	Try(1, 0, {});
-	if (res.size() == 0) cout << -1; else {
-		cout << res.size() << ' ';
-		for (auto i:res){
-			cout << '{';
-			for (int j=0; j<i.size(); j++){
-				cout << i[j];
-				if (j!=i.size() - 1) cout << ' ';
+	reverse(a.begin(), a.end());
+	vector<vector<int>> res;
+	for (int i=0; i< (1<<n); i++){
+		bitset<32> b(i);
+		vector<int> t;
+		int sum = 0;
+		string sb = b.to_string().substr(32-n);
+		for (int i=0; i<sb.size(); i++){
+			if (sb[i] == '1'){
+				sum += a[i];
+				t.pb(a[i]);
 			}
-			cout << "} ";
 		}
+		if (sum % 2 == 1){
+			res.pb(t);
+		}
+		// cout << b.to_string().substr(32-n) << endl;
+	}
+	for (auto i:res){
+		for (auto j:i){
+			cout << j << ' ';
+		}
+		cout << endl;
 	}
 }
 main(){

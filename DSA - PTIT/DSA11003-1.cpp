@@ -24,40 +24,50 @@ using namespace std;
 
 
 //end of template
-int n, k;
-vector<int> a;
-vector<vector<int>> res;
-void Try(int limit, int value, vector<int> v){
-	if (value == k){
-		res.pb(v);
+struct Node{
+	int data;
+	Node* left;
+	Node* right;
+	Node(){
+
 	}
-	for (int i=0; i<n; i++){
-		if (a[i] >= limit and a[i] + value <= k){
-			v.pb(a[i]);
-			Try(a[i], value + a[i], v);
-			v.pop_back();
-		}
+	Node(int val){
+		data = val;
+		left = right = NULL;
+	}
+};
+int n;
+vector<int> in, pre;
+int c = 0;
+Node* init_(int l1 = 0, int r1 = n-1, int l2 = 0){
+	if (l1>r1) return NULL;
+	Node* root = new Node(pre[l2]);
+	auto it = find(in.begin(), in.end(), pre[l2]);
+	int m = it - in.begin();
+	root->left = init_(l1, m-1, l2+1);
+	root->right = init_(m+1, r1, l2+m-l1+1);
+	return root;
+}
+void postOrder(Node* root){
+	if (root){
+		postOrder(root->left);
+		postOrder(root->right);
+		cout << root->data << ' ';
 	}
 }
 void solve(){
 	/*hav fun with coding*/
-	cin >> n >> k;
-	a.resize(n);
-	res.clear();
-	for (auto& i:a) cin >> i;
-	sort(a.begin(), a.end());
-	Try(1, 0, {});
-	if (res.size() == 0) cout << -1; else {
-		cout << res.size() << ' ';
-		for (auto i:res){
-			cout << '{';
-			for (int j=0; j<i.size(); j++){
-				cout << i[j];
-				if (j!=i.size() - 1) cout << ' ';
-			}
-			cout << "} ";
-		}
+	cin >> n;
+	in.resize(n);
+	pre.resize(n);
+	for (int i=0; i<n; i++){
+		cin >> in[i];
 	}
+	for (int i=0; i<n; i++){
+		cin >> pre[i];
+	}
+	Node* root = init_();
+	postOrder(root);
 }
 main(){
 	faster();

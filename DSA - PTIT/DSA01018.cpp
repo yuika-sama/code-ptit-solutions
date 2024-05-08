@@ -24,39 +24,32 @@ using namespace std;
 
 
 //end of template
-int n, k;
-vector<int> a;
-vector<vector<int>> res;
-void Try(int limit, int value, vector<int> v){
-	if (value == k){
-		res.pb(v);
-	}
-	for (int i=0; i<n; i++){
-		if (a[i] >= limit and a[i] + value <= k){
-			v.pb(a[i]);
-			Try(a[i], value + a[i], v);
-			v.pop_back();
+bool check(int a[], int k){
+	for (int i=1; i<=k; i++){
+		if (a[i] != i){
+			return false;
 		}
 	}
+	return true;
 }
 void solve(){
 	/*hav fun with coding*/
+	int n, k;
 	cin >> n >> k;
-	a.resize(n);
-	res.clear();
-	for (auto& i:a) cin >> i;
-	sort(a.begin(), a.end());
-	Try(1, 0, {});
-	if (res.size() == 0) cout << -1; else {
-		cout << res.size() << ' ';
-		for (auto i:res){
-			cout << '{';
-			for (int j=0; j<i.size(); j++){
-				cout << i[j];
-				if (j!=i.size() - 1) cout << ' ';
-			}
-			cout << "} ";
+	int a[k+5];
+	for (int i=1; i<=k; i++) cin >> a[i];
+	if (check(a, k)){
+		for (int i=k; i<=n; i++){
+			cout << i << ' ';
 		}
+	} else {
+		int i = k;
+		while (i>=1 and a[i] == a[i-1] + 1) i--;
+		if (i!=0) a[i]--;
+		for (int j = i+1; j<=k; j++){
+			a[j] = n-k+j;
+		}
+		for (int i=1; i<=k; i++) cout << a[i] << ' ';
 	}
 }
 main(){

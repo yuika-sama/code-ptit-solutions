@@ -24,40 +24,46 @@ using namespace std;
 
 
 //end of template
-int n, k;
-vector<int> a;
-vector<vector<int>> res;
-void Try(int limit, int value, vector<int> v){
-	if (value == k){
-		res.pb(v);
-	}
-	for (int i=0; i<n; i++){
-		if (a[i] >= limit and a[i] + value <= k){
-			v.pb(a[i]);
-			Try(a[i], value + a[i], v);
-			v.pop_back();
+
+int a[20][20];
+bool l[20], r[20], ok[20];
+int x[100];
+int res = 0;
+void Try(int i, int sum){
+	for (int j=1; j<=8; j++){
+		if (!ok[j] and !r[i+j-1] and !l[i-j+8]){
+			ok[j] = true;
+			r[i+j-1] = true;
+			l[i-j+8] = true;
+			sum += a[i][j];
+			if (i == 8){
+				res = max(res, sum);
+			} else Try(i+1, sum);
+			sum -= a[i][j];
+			ok[j] = false;
+			r[i+j-1] = false;
+			l[i-j+8] = false;
 		}
 	}
 }
 void solve(){
 	/*hav fun with coding*/
-	cin >> n >> k;
-	a.resize(n);
-	res.clear();
-	for (auto& i:a) cin >> i;
-	sort(a.begin(), a.end());
-	Try(1, 0, {});
-	if (res.size() == 0) cout << -1; else {
-		cout << res.size() << ' ';
-		for (auto i:res){
-			cout << '{';
-			for (int j=0; j<i.size(); j++){
-				cout << i[j];
-				if (j!=i.size() - 1) cout << ' ';
-			}
-			cout << "} ";
+	for (int i=1; i<=8; i++){
+		for (int j=1; j<=8; j++){
+			cin >> a[i][j];
 		}
 	}
+	memset(ok, 0, sizeof(ok));
+	memset(l, 0, sizeof(l));
+	memset(r, 0, sizeof(r));
+	res = 0;
+	for (int i=0; i<=10; i++){
+		x[i] = i;
+	}		
+
+	Try(1,0);
+
+	cout << res;
 }
 main(){
 	faster();

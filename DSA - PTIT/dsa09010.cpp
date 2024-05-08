@@ -24,40 +24,54 @@ using namespace std;
 
 
 //end of template
-int n, k;
-vector<int> a;
-vector<vector<int>> res;
-void Try(int limit, int value, vector<int> v){
-	if (value == k){
-		res.pb(v);
+set<int> adj[1005];
+int scc = 0;
+int time_dfs = 0;
+int low[1005], num[1005];
+bool deleted[1005];
+stack<int> st;
+void dfs(int u){
+	num[u] = low[u] = ++time_dfs;
+	st.push(u);
+	for (int v:adj[u]){
+		if (deleted[v]) continue;
+		if (!num[v]){
+			dfs(v);
+			low[u] = min(low[u], low[v]);
+		} else low[u] = min(low[u], num[v]);
 	}
-	for (int i=0; i<n; i++){
-		if (a[i] >= limit and a[i] + value <= k){
-			v.pb(a[i]);
-			Try(a[i], value + a[i], v);
-			v.pop_back();
-		}
+	if (low[u] == num[u]){
+		scc++;
+		int v;
+		do {
+			v = st.top();
+			st.pop();
+			deleted[v] = true;
+		} while (v!=u);
 	}
 }
 void solve(){
 	/*hav fun with coding*/
-	cin >> n >> k;
-	a.resize(n);
-	res.clear();
-	for (auto& i:a) cin >> i;
-	sort(a.begin(), a.end());
-	Try(1, 0, {});
-	if (res.size() == 0) cout << -1; else {
-		cout << res.size() << ' ';
-		for (auto i:res){
-			cout << '{';
-			for (int j=0; j<i.size(); j++){
-				cout << i[j];
-				if (j!=i.size() - 1) cout << ' ';
-			}
-			cout << "} ";
-		}
+	memset(deleted, false, sizeof(deleted));
+	while (st.size()) st.pop();
+	memset(low, 0, sizeof(low));
+	memset(num, 0, sizeof(low));
+	time_dfs = 0;
+	scc = 0;
+	for (auto& i:adj){
+		i.clear();
 	}
+	int v, e;
+	cin >> v >> e;
+	int x, y;
+	for (int i=0;i<e; i++){
+		cin >> x >> y;
+		adj[x].ins(y);
+	}
+	for (int i=1; i<=v; i++){
+		if (!num[i]) dfs(i);
+	}
+	if (scc == 1) cout << "YES"; else cout << "NO";
 }
 main(){
 	faster();

@@ -24,40 +24,48 @@ using namespace std;
 
 
 //end of template
-int n, k;
-vector<int> a;
-vector<vector<int>> res;
-void Try(int limit, int value, vector<int> v){
-	if (value == k){
-		res.pb(v);
-	}
-	for (int i=0; i<n; i++){
-		if (a[i] >= limit and a[i] + value <= k){
-			v.pb(a[i]);
-			Try(a[i], value + a[i], v);
-			v.pop_back();
+set<int> adj[1005];
+bool vs[1005];
+int v, e;
+void bfs(int u){
+	queue<int> q;
+	q.push(u);
+	vs[u] = true;
+	while (!q.empty()){
+		int x = q.front(); q.pop();
+		vs[x] = true;
+		for (auto y:adj[x]){
+			if (!vs[y]){
+				q.push(y);
+			}
 		}
 	}
 }
-void solve(){
-	/*hav fun with coding*/
-	cin >> n >> k;
-	a.resize(n);
-	res.clear();
-	for (auto& i:a) cin >> i;
-	sort(a.begin(), a.end());
-	Try(1, 0, {});
-	if (res.size() == 0) cout << -1; else {
-		cout << res.size() << ' ';
-		for (auto i:res){
-			cout << '{';
-			for (int j=0; j<i.size(); j++){
-				cout << i[j];
-				if (j!=i.size() - 1) cout << ' ';
-			}
-			cout << "} ";
+int cc(){
+	int c = 0;
+	for (int i=1; i<=v; i++){
+		if (!vs[i]){
+			c++;
+			bfs(i);
 		}
 	}
+	return c;
+}
+void solve(){
+	/*hav fun with coding*/
+	// int v, e;
+	for (auto& i:adj){
+		i.clear();
+	}
+	memset(vs, false, sizeof(vs));
+	cin >> v >> e;
+	int x, y;
+	for (int i=0; i<e; i++){
+		cin >> x >> y;
+		adj[x].ins(y);
+		adj[y].ins(x);
+	}
+	cout << cc();
 }
 main(){
 	faster();
