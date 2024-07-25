@@ -1,5 +1,5 @@
 # Hola!
-- Mình là Yuika, D22, khoa Công nghệ Đa phương tiện - PTIT, cơ sở miền Bắc
+- Mình là Yuika, D22, chuyên ngành Công nghệ Đa phương tiện, khoa Đa phương tiện, PTIT, cơ sở miền Bắc
 - Đây là những bài tập về giải thuật nói chung trên hệ thống giải thuật nội bộ Code PTIT
 - Solution mình đưa ra chỉ là tham khảo, không phải là tối ưu nhất
 - Có nhiều file bài tập mình up nhiều lần với đuôi khác nhau(VD: A-1.cpp, A-2.cpp,...). Có thể một hoặc một vài file trong đó sẽ là solution sai, hoặc là sẽ là nhiều solution khác nhau ở nhiều file. Bạn đọc tự tìm hiểu :DDD
